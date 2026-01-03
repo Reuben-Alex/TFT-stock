@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  tft-dashboard:
+    build: .
+    ports:
+      - "7861:7861"
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./logs:/app/logs
+      - ./config:/app/config
+    restart: unless-stopped
+    environment:
+      - PYTHONPATH=/app
+      - GRADIO_SERVER_NAME=0.0.0.0
+    networks:
+      - tft-network
+
+networks:
+  tft-network:
+    driver: bridge

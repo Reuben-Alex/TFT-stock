@@ -1,0 +1,45 @@
+# Core ML and Deep Learning
+torch>=2.0.0
+torchvision>=0.15.0
+pytorch-lightning>=2.0.0
+
+# Data handling and APIs
+yfinance>=0.2.18
+pandas>=2.0.0
+numpy>=1.24.0
+scipy>=1.10.0
+scikit-learn>=1.3.0
+
+# Technical Analysis
+# ta-lib>=0.4.25  # Optional - our code has fallback implementations
+# pandas-ta>=0.3.14  # Optional - our code has manual implementations
+
+# Database and Storage
+# sqlite3 is built into Python
+
+# Visualization and Interface
+gradio>=3.40.0
+plotly>=5.15.0
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Configuration and Utilities
+pyyaml>=6.0
+python-dotenv>=1.0.0
+tqdm>=4.65.0
+joblib>=1.3.0
+
+# Logging and Monitoring
+tensorboard>=2.13.0
+wandb>=0.15.0
+
+# Financial and Economic data
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+
+# Development and Testing
+jupyter>=1.0.0
+notebook>=6.5.0
+pytest>=7.4.0
+black>=23.0.0
+flake8>=6.0.0
