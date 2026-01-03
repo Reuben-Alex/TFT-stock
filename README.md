@@ -280,7 +280,7 @@ The system predicts multiple targets simultaneously:
 | Validation MSE | 0.0028 | Mean squared error on validation set |
 | Training Loss | 0.5139 | Multi-task training loss |
 | Model Parameters | 127,013 | Total trainable parameters |
-| Training Time | 2.2 min/epoch | On Apple M2 chip |
+| Training Time | 2.2 min/epoch | On  M2 chip |
 
 ### Prediction Accuracy
 
