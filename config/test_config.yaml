@@ -1,0 +1,135 @@
+data:
+  database:
+    backup_frequency: 7
+    path: data/stocks.db
+  markets:
+    bse_url: https://www.bseindia.com/corporates/List_Scrips.aspx
+    indices:
+    - ^NSEI
+    - ^BSESN
+    - ^INDIAVIX
+    nse_url: https://www1.nseindia.com/content/equities/EQUITY_L.csv
+  quality:
+    max_missing_pct: 0.05
+    min_trading_days: 252
+    outlier_threshold: 5.0
+  yahoo:
+    interval: 1d
+    period: 5y
+    threads: 10
+features:
+  market:
+    beta_calculation_window: 252
+    relative_strength_periods:
+    - 10
+    - 20
+    - 50
+    sector_correlation_window: 252
+  technical:
+    bollinger_period: 20
+    bollinger_std: 2
+    ema_periods:
+    - 12
+    - 26
+    macd_params:
+    - 12
+    - 26
+    - 9
+    rsi_period: 14
+    sma_periods:
+    - 5
+    - 10
+    - 20
+    - 50
+    - 200
+  temporal:
+    earnings_season_months:
+    - 1
+    - 4
+    - 7
+    - 10
+    include_day_of_week: true
+    include_month: true
+    include_quarter: true
+interface:
+  dashboard:
+    default_charts:
+    - price
+    - volume
+    - rsi
+    - macd
+    max_stocks_display: 50
+    refresh_interval: 300
+  gradio:
+    debug: true
+    port: 7860
+    share: false
+logging:
+  backup_count: 5
+  file: logs/stock_predictor.log
+  format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+  level: INFO
+  max_file_size: 10MB
+model:
+  tasks:
+    daily_price:
+      loss: mse
+      weight: 1.0
+    monthly_price:
+      loss: mse
+      weight: 0.6
+    ranking_score:
+      loss: ranking
+      weight: 0.5
+    weekly_price:
+      loss: mse
+      weight: 0.8
+  tft:
+    attention_heads: 4
+    dropout: 0.1
+    dynamic_features: 29
+    hidden_size: 320
+    lookback_window: 60
+    lstm_layers: 2
+    prediction_horizons:
+    - 1
+    - 5
+    - 22
+    quantiles:
+    - 0.1
+    - 0.5
+    - 0.9
+    static_features: 10
+prediction:
+  forecasting:
+    min_volume: 100000
+    sector_diversification: true
+    top_picks: 20
+  portfolio:
+    max_positions: 20
+    max_sector_weight: 0.3
+    risk_free_rate: 0.06
+    target_volatility: 0.15
+  signals:
+    buy_threshold: 0.02
+    confidence_threshold: 0.7
+    sell_threshold: -0.02
+training:
+  batch_size: 16
+  early_stopping:
+    min_delta: 0.001
+    monitor: val_loss
+    patience: 10
+  learning_rate: 0.001
+  max_epochs: 1
+  scheduler:
+    factor: 0.5
+    min_lr: 1e-6
+    patience: 5
+    type: reduce_on_plateau
+  validation:
+    initial_train_years: 3
+    strategy: walk_forward
+    test_months: 1
+    validation_months: 3
+  weight_decay: 1e-5

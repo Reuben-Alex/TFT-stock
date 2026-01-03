@@ -1,0 +1,95 @@
+# Optimized configuration for MacBook M2
+data:
+  # Data parameters
+  symbols_file: 'config/nse_symbols.txt'
+  database:
+    path: 'data/stocks.db'
+  start_date: '2023-01-01'
+  end_date: '2024-12-31'
+  
+  # Data quality parameters
+  quality:
+    outlier_threshold: 3.0
+    min_volume: 1000
+    min_price: 1.0
+    max_missing_ratio: 0.1
+  
+  # Processing parameters
+  lookback_window: 60
+  prediction_horizons: [1, 5, 20]  # 1-day, 1-week, 1-month
+  test_split: 0.2
+  val_split: 0.2
+  
+  # Feature engineering
+  features:
+    technical_indicators: true
+    market_features: true
+    temporal_features: true
+
+model:
+  # Architecture parameters - optimized for M2
+  tft:
+    hidden_size: 256          # Reduced for faster training
+    lstm_layers: 2
+    attention_heads: 4
+    dropout: 0.1
+    
+    # Input configuration  
+    static_features: 10
+    dynamic_features: 29      # Match our feature engineering
+    lookback_window: 60
+    
+    # Output configuration
+    quantiles: [0.1, 0.5, 0.9]
+    prediction_horizons: [1, 5, 20]
+    
+    # Multi-task learning
+    tasks:
+      daily_price: {weight: 1.0, type: 'regression'}
+      weekly_price: {weight: 0.8, type: 'regression'} 
+      monthly_price: {weight: 0.6, type: 'regression'}
+      ranking_score: {weight: 0.5, type: 'regression'}
+
+training:
+  # Training parameters - optimized for M2
+  batch_size: 64              # Increased for M2 GPU
+  max_epochs: 15              # Reasonable for quick results
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  
+  # Validation
+  validation_split: 0.2
+  
+  # Early stopping
+  early_stopping:
+    patience: 5
+    min_delta: 0.0001
+    monitor: 'val_loss'
+  
+  # Scheduler
+  scheduler:
+    type: 'reduce_on_plateau'
+    factor: 0.5
+    patience: 3
+    min_lr: 0.0001
+  
+  # Gradient clipping for M2 stability
+  gradient_clip_norm: 1.0
+
+# Portfolio optimization
+portfolio:
+  # Risk parameters
+  target_return: 0.15
+  max_weight: 0.1
+  min_weight: 0.01
+  
+  # Optimization
+  lookback_days: 252
+  rebalance_frequency: 'monthly'
+
+# Dashboard configuration
+dashboard:
+  host: '0.0.0.0'
+  port: 7861
+  share: false
+  debug: false
