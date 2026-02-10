@@ -299,52 +299,7 @@ The system predicts multiple targets simultaneously:
 | Model Training | 2.2 min/epoch | 1GB RAM |
 | Inference | 1000 predictions/sec | 100MB RAM |
 
-## API Reference
 
-### Data Collection
-
-```python
-from src.data.collectors import StockDataCollector
-
-collector = StockDataCollector(config)
-data = collector.collect_stock_data(['RELIANCE.NS', 'TCS.NS'])
-```
-
-### Feature Engineering
-
-```python
-from src.data.features import FeatureEngineer
-
-engineer = FeatureEngineer(config, 'data/stocks.db')
-features = engineer.engineer_features(data, 'RELIANCE.NS')
-```
-
-### Model Training
-
-```python
-from src.models.training import TFTTrainer
-
-trainer = TFTTrainer(config)
-trainer.train_model(['RELIANCE.NS', 'TCS.NS'])
-```
-
-### Prediction Generation
-
-```python
-from src.prediction.forecasting import StockForecaster
-
-forecaster = StockForecaster(config)
-predictions = forecaster.generate_forecasts(['RELIANCE.NS'])
-```
-
-### Portfolio Optimization
-
-```python
-from src.prediction.portfolio import PortfolioOptimizer
-
-optimizer = PortfolioOptimizer(config)
-portfolio = optimizer.optimize_portfolio(predictions, risk_level=0.5)
-```
 
 ## File Structure
 
@@ -363,31 +318,6 @@ portfolio = optimizer.optimize_portfolio(predictions, risk_level=0.5)
 ### Log Files
 - `logs/stock_predictor.log`: System execution logs
 - `logs/training.log`: Training progress logs
-
-## Troubleshooting
-
-### Common Issues
-
-**Memory Error during Training**
-- Reduce batch_size in config.yaml
-- Decrease lookback_window
-- Train on fewer stocks initially
-
-**Data Collection Failures**
-- Check internet connection
-- Verify Yahoo Finance symbol format
-- Reduce concurrent threads in config
-
-**Model Training Convergence Issues**
-- Adjust learning rate (try 0.0001-0.01)
-- Increase/decrease model complexity
-- Check for data quality issues
-
-**Dashboard Access Issues**
-- Verify port 7861 is available
-- Check firewall settings
-- Try different port in config
-
 
 
 ## Contributing
